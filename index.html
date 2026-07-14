@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Repostería</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- NAVBAR PRINCIPAL -->
+    <header class="navbar">
+        <div class="logo-container">
+            <!-- Reemplaza 'logo.png' con el nombre real de tu imagen -->
+            <img src="hwconfetteria logo.jpg" alt="Logo Repostería" class="logo-img">
+        </div>
+        
+        <div class="right-nav">
+            <!-- Icono del Carrito -->
+            <div class="cart-icon" onclick="toggleCart()">
+                🛒 <span id="cart-count">0</span>
+            </div>
+            <!-- Botón de Tres Rayitas (Hamburgesa) -->
+            <div class="menu-toggle" onclick="toggleMenu()">
+                &#9776;
+            </div>
+        </div>
+    </header>
+
+    <!-- MENÚ LATERAL DESPLEGABLE (DERECHA) -->
+    <nav class="sidebar" id="sidebar">
+        <div class="close-btn" onclick="toggleMenu()">&times;</div>
+        <ul class="menu-links">
+            <li><a href="#postres" onclick="toggleMenu()">Postres</a></li>
+            <li><a href="#pasteles" onclick="toggleMenu()">Encargos</a></li>
+            <li><a href="#historia" onclick="toggleMenu()">Historia</a></li>
+            <li><a href="#contacto" onclick="toggleMenu()">Contactos</a></li>
+            <li><a href="https://www.google.com/maps/place/RESIDENCIAL+DON+NUBE+II/@19.465714,-70.6637357,17z/data=!3m1!4b1!4m6!3m5!1s0x8eb1c570ee12535b:0x42874ad050d74ec9!8m2!3d19.465714!4d-70.6611608!16s%2Fg%2F11fz7tf214?entry=ttu&g_ep=EgoyMDI2MDcwOC4wIKXMDSoASAFQAw%3D%3D" target="_blank" class="map-link">📍 Ubicación de la Tienda</a></li>
+        </ul>
+    </nav>
+
+    <!-- CARRITO LATERAL -->
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="close-btn" onclick="toggleCart()">&times;</div>
+        <h3>Tu Pedido</h3>
+        <ul id="cart-items">
+            <!-- Los productos agregados aparecerán aquí -->
+        </ul>
+
+        <!-- SELECCIÓN DE FECHA Y HORA (DISEÑO PROFESIONAL) -->
+        <div class="order-date-card">
+            <div class="date-header">
+                <span class="calendar-icon">📅</span>
+                <span class="date-label">¿Para cuándo deseas tu pedido?</span>
+            </div>
+            <input type="datetime-local" id="order-date" required>
+        </div>
+
+        <div class="cart-total">
+            <strong>Total: $<span id="cart-total-val">0</span></strong>
+        </div>
+        <button class="btn-checkout" onclick="checkoutWhatsApp()">Confirmar Orden</button>
+    </div>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="content">
+        
+        <!-- SECCIÓN POSTRES -->
+        <section id="postres" class="product-section">
+            <h2>Nuestros Postres</h2>
+            <div class="products-grid">
+                <div class="product-card">
+                    <!-- Imagen para el Tres Leches -->
+                    <img src="tres leches .jpeg" alt="Postre Tres Leches" class="product-img"> 
+                    <h3>Postre Tres Leches</h3>
+                    <p class="price">$175</p>
+                    <button class="btn-add" onclick="addToCart('Tres Leches', 175)">Agregar al Carrito</button>
+                </div>
+                <div class="product-card">
+                    <!-- Imagen para los Cupcakes -->
+                    <img src="Brownie.jpeg" alt="Browcookie" class="product-img">
+                    <h3>Browcookie</h3>
+                    <p class="price">$175</p>
+                    <button class="btn-add" onclick="addToCart('Browcookie', 175)">Agregar al Carrito</button>
+                </div>
+            <div class="product-card">
+                    <!-- Imagen para los Cupcakes -->
+                    <img src="alfajores.png" alt="Cupcakes Variados" class="product-img">
+                    <h3>Alfajores (2)</h3>
+                    <p class="price">$100</p>
+                    <button class="btn-add" onclick="addToCart('Cupcakes Variados', 100)">Agregar al Carrito</button>
+                </div>
+            <div class="product-card">
+                    <!-- Imagen para los Cupcakes -->
+                    <img src="cookie .png" alt="Cupcakes Variados" class="product-img">
+                    <h3>Cookie</h3>
+                    <p class="price">$100</p>
+                    <button class="btn-add" onclick="addToCart('Cupcakes Variados', 100)">Agregar al Carrito</button>
+                </div>
+            <div class="product-card">
+                    <!-- Imagen para los Cupcakes -->
+                    <img src="Red velvets.png" alt="Cupcakes Variados" class="product-img">
+                    <h3>Red Velvets</h3>
+                    <p class="price">$100</p>
+                    <button class="btn-add" onclick="addToCart('Cupcakes Variados', 100)">Agregar al Carrito</button>
+                </div>
+                            <div class="product-card">
+                    <!-- Imagen para los Cupcakes -->
+                    <img src="Brownie.png" alt="Cupcakes Variados" class="product-img">
+                    <h3>Brownie</h3>
+                    <p class="price">$100</p>
+                    <button class="btn-add" onclick="addToCart('Cupcakes Variados', 100)">Agregar al Carrito</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN PASTELES -->
+        <section id="pasteles" class="product-section">
+            <h2>Encargos</h2>
+            <div class="products-grid">
+                <div class="product-card">
+                    <!-- Imagen para el Pastel de Cumpleaños -->
+                    <img src="Encargo 2.jpeg" alt="Pastel de Cumpleaños" class="product-img">
+                    <h3>Galletitas De Jengibre Navideñas </h3>
+                    <p class="price">$75</p>
+                    <button class="btn-add" onclick="addToCart('Pastel de Cumpleaños', 75)">Agregar al Carrito</button>
+                </div>
+                               <div class="product-card">
+                    <!-- Imagen para el Pastel de Cumpleaños -->
+                    <img src="Encargo 4.jpeg"Pastel de Cumpleaños" class="product-img">
+                    <h3>Galletitas Decoradas </h3>
+                    <p class="price">$150 / 175</p>
+                    <button class="btn-add" onclick="addToCart('Pastel de Cumpleaños', 150)">Agregar al Carrito</button>
+                </div>
+                                               <div class="product-card">
+                    <!-- Imagen para el Pastel de Cumpleaños -->
+                    <img src="Galletitas de jengibre.jpeg"Pastel de Cumpleaños" class="product-img">
+                    <h3>Muñequito De Jengibre </h3>
+                    <p class="price">$60</p>
+                    <button class="btn-add" onclick="addToCart('Pastel de Cumpleaños', 60)">Agregar al Carrito</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN HISTORIA -->
+        <section id="historia" class="about-section">
+            <h2>Historia</h2>
+            <p>Comenzamos con la ilusión de llevar dulzura y momentos inolvidables a cada hogar. Cada receta está hecha a mano de manera artesanal, cuidando cada detalle con amor, dedicación y los ingredientes más selectos para garantizar un sabor único de la más alta calidad.</p>
+        </section>
+
+        <!-- SECCIÓN CONTACTO -->
+        <section id="contacto" class="contact-section">
+            <h2>Contactos</h2>
+            <p>¿Tienes dudas o quieres un pedido personalizado?</p>
+            <p>📱 WhatsApp: <strong>(849) 377-9046</strong></p>
+            <p>📩 Correo: <strong>davidliriano009@gmail.com</strong>
+            <!-- MENÚ LATERAL DESPLEGABLE (DERECHA) -->
+        </section>
+
+    </main>
+
+    <!-- SCRIPT PARA INTERACTIVIDAD -->
+    <script>
+        let cart = [];
+        
+        function toggleMenu() {
+            document.getElementById('sidebar').classList.toggle('active');
+        }
+
+        function toggleCart() {
+            document.getElementById('cartSidebar').classList.toggle('active');
+        }
+
+        function addToCart(name, price) {
+            cart.push({name, price});
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            document.getElementById('cart-count').innerText = cart.length;
+            const cartItemsContainer = document.getElementById('cart-items');
+            cartItemsContainer.innerHTML = '';
+            
+            let total = 0;
+            cart.forEach((item, index) => {
+                total += item.price;
+                let li = document.createElement('li');
+                li.innerHTML = `${item.name} - $${item.price} <span class="remove-item" onclick="removeItem(${index})">&times;</span>`;
+                cartItemsContainer.appendChild(li);
+            });
+            
+            document.getElementById('cart-total-val').innerText = total;
+        }
+
+        function removeItem(index) {
+            cart.splice(index, 1);
+            updateCartUI();
+        }
+
+        function checkoutWhatsApp() {
+            if(cart.length === 0) {
+                alert("El carrito está vacío.");
+                return;
+            }
+
+            // Obtener la fecha seleccionada por el usuario
+            const dateInput = document.getElementById('order-date').value;
+            if(!dateInput) {
+                alert("Por favor, selecciona la fecha y hora para la entrega de tu pedido.");
+                return;
+            }
+
+            // Formatear la fecha para que sea más legible
+            const fechaFormateada = new Date(dateInput).toLocaleString('es-DO', {
+                dateStyle: 'medium',
+                timeStyle: 'short'
+            });
+
+            let mensaje = "¡Hola! Me gustaría hacer una orden de la web:\n\n";
+            let total = 0;
+            cart.forEach(item => {
+                mensaje += `- ${item.name} ($${item.price})\n`;
+                total += item.price;
+            });
+            
+            mensaje += `\n📅 *Fecha y hora de entrega:* ${fechaFormateada}`;
+            mensaje += `\n*Total a pagar: $${total}*`;
+            
+            let url = `https://wa.me/18493779046?text=${encodeURIComponent(mensaje)}`;
+            window.open(url, '_blank');
+        }
+    </script>
+</body>
+</html>
