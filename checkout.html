@@ -1,0 +1,278 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finalizar Pedido - WH Confetteria</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="checkout-body">
+
+    <!-- NAVBAR PREMIUM MINIMALISTA -->
+    <header class="checkout-navbar">
+        <img src="hwconfetteria logo.jpg" alt="Logo Repostería" class="checkout-logo" onclick="window.location.href='index.html'">
+        <span class="secure-icon">🔒 Pago Seguro</span>
+    </header>
+
+    <!-- VENTANA EMERGENTE DE AVISO -->
+    <div id="custom-alert" class="modal-alert">
+        <div class="modal-alert-content">
+            <span class="modal-alert-icon">⚠️</span>
+            <p id="modal-alert-text"></p>
+            <button class="btn-modal-close" onclick="closeAlert()">Entendido</button>
+        </div>
+    </div>
+
+    <!-- ENCABEZADO DE FORMULARIO DESPEJADO -->
+    <div class="checkout-title-container">
+        <h2>Finalizar tu compra</h2>
+        <p>Por favor, completa tus datos para procesar la orden de tus postres.</p>
+    </div>
+
+    <!-- INTERFAZ DOS COLUMNAS -->
+    <div class="checkout-container">
+        
+        <!-- COLUMNA IZQUIERDA: CONFIGURACIÓN DE FORMULARIOS -->
+        <div class="checkout-main">
+            
+            <!-- PASO 1: DATOS PERSONALES -->
+            <div class="checkout-section-card">
+                <h3><span>1</span> Datos del Cliente</h3>
+                <div class="form-group">
+                    <label for="client-name">Nombre Completo</label>
+                    <input type="text" id="client-name" placeholder="Ej. Juan Pérez" required>
+                </div>
+            </div>
+
+            <!-- PASO 2: MÉTODOS DE ENTREGA DINÁMICOS -->
+            <div class="checkout-section-card">
+                <h3><span>2</span> Método de Entrega</h3>
+                <div class="delivery-tabs">
+                    <button type="button" class="tab-btn active" id="btn-pickup" onclick="setDeliveryMethod('pickup')">Pasar a buscar</button>
+                    <button type="button" class="tab-btn" id="btn-delivery" onclick="setDeliveryMethod('delivery')">Envío a domicilio</button>
+                </div>
+                
+                <!-- MOSTRADO POR DEFECTO -->
+                <div id="pickup-info" class="delivery-content active">
+                    <p class="pickup-text">📍 Retira tu pedido directamente en nuestra ubicación: <br><strong>Residencial Don Nube II</strong>.</p>
+                </div>
+                
+                <!-- OCULTO POR DEFECTO -->
+                <div id="delivery-info" class="delivery-content">
+                    <div class="form-group">
+                        <label for="order-address">Dirección Exacta de Envío</label>
+                        <textarea id="order-address" placeholder="Sector, Calle, Número de casa o apartamento y referencias..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PASO 3: PROGRAMACIÓN DE TIEMPO -->
+            <div class="checkout-section-card">
+                <h3><span>3</span> Programar Entrega</h3>
+                <div class="form-group">
+                    <label for="order-date">¿Para qué fecha y hora deseas tu pedido?</label>
+                    <input type="datetime-local" id="order-date" required>
+                </div>
+            </div>
+
+            <!-- PASO 4: MÉTODOS DE PAGO INTELIGENTES -->
+            <div class="checkout-section-card">
+                <h3><span>4</span> Método de Pago</h3>
+                <div class="payment-tabs">
+                    <button type="button" class="pay-tab-btn active" id="btn-cash" onclick="setPaymentMethod('cash')">Efectivo</button>
+                    <button type="button" class="pay-tab-btn" id="btn-transfer" onclick="setPaymentMethod('transfer')">Transferencia Bancaria</button>
+                </div>
+
+                <!-- SECCIÓN DE BANCOS OCULTA POR DEFECTO -->
+                <div id="bank-info" class="payment-content">
+                    <p class="bank-instruction">Selecciona el banco desde el cual vas a transferir:</p>
+                    
+                    <div class="bank-options-grid">
+                        <div class="bank-item" id="bank-reservas" onclick="selectBank('Banreservas')">
+                            <img src="Banreservas.jpg" alt="Banreservas" class="bank-logo-img">
+                            <span>Banreservas</span>
+                        </div>
+                        <div class="bank-item" id="bank-popular" onclick="selectBank('Popular')">
+                            <img src="Popular.png" alt="Popular" class="bank-logo-img">
+                            <span>Banco Popular</span>
+                        </div>
+                        <div class="bank-item" id="bank-bhd" onclick="selectBank('BHD')">
+                            <img src="Bhd.jpg" alt="BHD" class="bank-logo-img">
+                            <span>Banco BHD</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- COLUMNA DERECHA: RESUMEN LATERAL FIJO -->
+        <div class="checkout-sidebar">
+            <div class="summary-card">
+                <h3>Resumen del Pedido</h3>
+                <hr class="summary-divider">
+                <ul id="summary-items-list" class="summary-items-list">
+                    <!-- Dinámico -->
+                </ul>
+                <hr class="summary-divider">
+                <div class="summary-total-row">
+                    <span>Total a pagar:</span>
+                    <span class="total-price">$<span id="summary-total-val">0</span></span>
+                </div>
+                <button class="btn-place-order" onclick="processFinalOrder()">Confirmar y Enviar por WhatsApp</button>
+                <button class="btn-back-store" onclick="window.location.href='index.html'">← Volver a la tienda</button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- SCRIPT LOGICIAL DE FILTRADO -->
+    <script>
+        let checkoutCart = [];
+        let deliveryMethod = 'pickup';
+        let paymentMethod = 'cash';
+        let selectedBankName = '';
+
+        window.onload = function() {
+            const savedCart = localStorage.getItem('wh_cart');
+            if(!savedCart) {
+                window.location.href = 'index.html';
+                return;
+            }
+            checkoutCart = JSON.parse(savedCart);
+            renderSummary();
+        };
+
+        function renderSummary() {
+            const listContainer = document.getElementById('summary-items-list');
+            listContainer.innerHTML = '';
+            let total = 0;
+
+            checkoutCart.forEach(item => {
+                total += item.price;
+                let li = document.createElement('li');
+                li.className = 'summary-item';
+                li.innerHTML = `<span>${item.name}</span> <strong>$${item.price}</strong>`;
+                listContainer.appendChild(li);
+            });
+
+            document.getElementById('summary-total-val').innerText = total;
+        }
+
+        function showAlert(text) {
+            document.getElementById('modal-alert-text').innerText = text;
+            document.getElementById('custom-alert').classList.add('show');
+        }
+        function closeAlert() { document.getElementById('custom-alert').classList.remove('show'); }
+
+        function setDeliveryMethod(method) {
+            deliveryMethod = method;
+            document.getElementById('btn-pickup').classList.remove('active');
+            document.getElementById('btn-delivery').classList.remove('active');
+            document.getElementById('pickup-info').classList.remove('active');
+            document.getElementById('delivery-info').classList.remove('active');
+            
+            if(method === 'pickup') {
+                document.getElementById('btn-pickup').classList.add('active');
+                document.getElementById('pickup-info').classList.add('active');
+                document.getElementById('order-address').value = ""; 
+            } else {
+                document.getElementById('btn-delivery').classList.add('active');
+                document.getElementById('delivery-info').classList.add('active');
+            }
+        }
+
+        function setPaymentMethod(method) {
+            paymentMethod = method;
+            document.getElementById('btn-cash').classList.remove('active');
+            document.getElementById('btn-transfer').classList.remove('active');
+            document.getElementById('bank-info').classList.remove('active');
+            
+            if(method === 'cash') {
+                document.getElementById('btn-cash').classList.add('active');
+                selectedBankName = '';
+                clearBankSelection();
+            } else {
+                document.getElementById('btn-transfer').classList.add('active');
+                document.getElementById('bank-info').classList.add('active');
+            }
+        }
+
+        function selectBank(bank) {
+            selectedBankName = bank;
+            clearBankSelection();
+            if(bank === 'Banreservas') document.getElementById('bank-reservas').classList.add('selected');
+            if(bank === 'Popular') document.getElementById('bank-popular').classList.add('selected');
+            if(bank === 'BHD') document.getElementById('bank-bhd').classList.add('selected');
+        }
+
+        function clearBankSelection() {
+            document.getElementById('bank-reservas').classList.remove('selected');
+            document.getElementById('bank-popular').classList.remove('selected');
+            document.getElementById('bank-bhd').classList.remove('selected');
+        }
+
+        function processFinalOrder() {
+            const name = document.getElementById('client-name').value.trim();
+            if(!name) {
+                showAlert("Por favor, introduce tu nombre.");
+                return;
+            }
+
+            let address = "";
+            if(deliveryMethod === 'delivery') {
+                address = document.getElementById('order-address').value.trim();
+                if(!address) {
+                    showAlert("Por favor, ingresa tu dirección de envío.");
+                    return;
+                }
+            }
+
+            const dateVal = document.getElementById('order-date').value;
+            if(!dateVal) {
+                showAlert("Por favor, selecciona el día y la hora de entrega.");
+                return;
+            }
+
+            if(paymentMethod === 'transfer' && !selectedBankName) {
+                showAlert("Por favor, selecciona un banco para la transferencia.");
+                return;
+            }
+
+            const fechaFormateada = new Date(dateVal).toLocaleString('es-DO', {
+                dateStyle: 'medium', timeStyle: 'short'
+            });
+
+            let mensaje = `🛍️ *NUEVA ORDEN DE LA WEB - WH CONFETTERIA*\n\n`;
+            mensaje += `👤 *Cliente:* ${name}\n`;
+            mensaje += `📅 *Fecha y hora:* ${fechaFormateada}\n`;
+            
+            if(deliveryMethod === 'pickup') {
+                mensaje += `🛵 *Tipo:* Pasar a buscar por la tienda\n`;
+            } else {
+                mensaje += `🛵 *Tipo:* Envío a domicilio\n📍 *Dirección:* ${address}\n`;
+            }
+
+            if(paymentMethod === 'cash') {
+                mensaje += `💵 *Pago:* Efectivo\n`;
+            } else {
+                mensaje += `💵 *Pago:* Transferencia Bancaria (${selectedBankName})\n`;
+            }
+
+            mensaje += `\n📦 *Detalle del Pedido:*\n`;
+            let total = 0;
+            checkoutCart.forEach(item => {
+                mensaje += `- ${item.name} ($${item.price})\n`;
+                total += item.price;
+            });
+
+            mensaje += `\n💰 *Total a pagar: $${total}*`;
+
+            let url = `https://wa.me/18493779046?text=${encodeURIComponent(mensaje)}`;
+            localStorage.removeItem('wh_cart'); 
+            window.open(url, '_blank');
+        }
+    </script>
+</body>
+</html>
