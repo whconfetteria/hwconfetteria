@@ -49,10 +49,13 @@ body {
     filter: none !important;
 }
 
+/* Hace que el logo de la barra de navegación sea redondo */
 .logo-img {
-    height: 50px; 
-    object-fit: contain;
-    border-radius: 100%;
+    width: 45px;          /* Ajusta el tamaño que quieras aquí */
+    height: 45px;         /* Debe ser el mismo valor de la anchura */
+    border-radius: 50%;   /* Esto es lo que lo hace completamente circular */
+    object-fit: cover;    /* Evita que el logo se estire o se deforme */
+    border: 2px solid #E6D5C3; /* Un borde sutil que combine con tu paleta (opcional) */
 }
 
 .logo-text{
@@ -1542,4 +1545,9 @@ body {
         grid-template-columns: 1fr; 
         gap: 10px;
     }
+}
+
+/* Elimina el recuadro azul transparente al tocar en dispositivos móviles */
+* {
+    -webkit-tap-highlight-color: transparent;
 }
