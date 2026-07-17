@@ -3,24 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mi Repostería</title>
+    <title>WH Confetteria</title>
+    <!-- Importación de la tipografía Playfair Display para el título Hero -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- NAVBAR PRINCIPAL -->
-    <header class="navbar">
-        <!-- LOGO EN NAVBAR PRINCIPAL -->
-         <!-- LOGO EN NAVBAR PRINCIPAL -->
-        <div class="logo-container">
-            <img src="hwconfetteria logo.jpg" alt="Logo Repostería" class="logo-img">
+
+<!-- ==========================================================================
+   NUEVA SECCIÓN HERO DE BIENVENIDA (ESTILO EXCLUSIVO WH CONFETTERIA)
+   ========================================================================== -->
+<section class="hero-section">
+    <!-- Capa de fondo con imagen grande y difuminada -->
+    <div class="hero-background-overlay"></div>
+    
+    <div class="hero-container">
+        <!-- LADO IZQUIERDO: TEXTOS Y BOTÓN -->
+        <div class="hero-text-content">
+            <span class="hero-subtitle">HECHO CON AMOR</span>
+            <h1 class="hero-title">El arte del dulce <br><em>Hecho tentación</em></h1>
+            <p class="hero-description">
+                Galletas artesanales horneadas a diario con el balance perfecto de sabor. Texturas únicas, ingredientes premium y un toque de magia en cada bocado.
+            </p>
+            <a href="#postres" class="btn-hero-action">
+                <span class="hero-btn-icon">🛒</span> Ordenar Ahora
+            </a>
         </div>
         
+        <!-- LADO DERECHO: TARJETA DEL PRODUCTO ESTRELLA -->
+        <div class="hero-image-content">
+            <div class="hero-product-card">
+                <img src="Red velvets.png" alt="Producto Estrella" class="hero-highlight-img">
+            </div>
+        </div>
+    </div>
+</section>
+
+    <!-- NAVBAR PRINCIPAL -->
+    <header class="navbar">
+        <!-- LOGO CON NOMBRE DINÁMICO (MÓVIL / ESCRITORIO) -->
+        <a href="#" class="logo-container" style="text-decoration: none; display: flex; align-items: center; gap: 10px;">
+            <img src="hwconfetteria logo.jpg" alt="Logo Repostería" class="logo-img">
+            <!-- Textos alternativos controlados por CSS -->
+            <span class="logo-text logo-desktop">WHCONFETTERIA</span>
+            <span class="logo-text logo-mobile">WH</span>
+        </a>
+        
         <div class="right-nav">
-            <div class="cart-icon" onclick="toggleCart()">
+            <div class="cart-icon" onclick="toggleCart(event)">
                 🛒 <span id="cart-count">0</span>
             </div>
-            <div class="menu-toggle" onclick="toggleMenu()">
+            <div class="menu-toggle" onclick="toggleMenu(event)">
                 &#9776;
             </div>
         </div>
@@ -28,20 +62,19 @@
 
     <!-- MENÚ LATERAL DESPLEGABLE -->
     <nav class="sidebar" id="sidebar">
-        <!-- LOGO EN NAVBAR PRINCIPAL -->
-        <div class="close-btn" onclick="toggleMenu()">&times;</div>
+        <div class="close-btn" onclick="toggleMenu(event)">&times;</div>
         <ul class="menu-links">
-            <li><a href="#postres" onclick="toggleMenu()">Postres</a></li>
-            <li><a href="#pasteles" onclick="toggleMenu()">Encargos</a></li>
-            <li><a href="#historia" onclick="toggleMenu()">Historia</a></li>
-            <li><a href="#contacto" onclick="toggleMenu()">Contactos</a></li>
+            <li><a href="#postres" onclick="toggleMenu(event)">Postres</a></li>
+            <li><a href="#pasteles" onclick="toggleMenu(event)">Encargos</a></li>
+            <li><a href="#historia" onclick="toggleMenu(event)">Historia</a></li>
+            <li><a href="#contacto" onclick="toggleMenu(event)">Contactos</a></li>
             <li><a href="https://www.google.com/maps/place/RESIDENCIAL+DON+NUBE+II/@19.465714,-70.6637357,17z/" target="_blank" class="map-link">📍 Ubicación</a></li>
         </ul>
     </nav>
 
-    <!-- CARRITO LATERAL SIMPLE -->
+    <!-- CARRITO LATERAL -->
     <div class="cart-sidebar" id="cartSidebar">
-        <div class="close-btn" onclick="toggleCart()">&times;</div>
+        <div class="close-btn" onclick="toggleCart(event)">&times;</div>
         <h3>Tu Pedido</h3>
         <ul id="cart-items">
             <!-- Productos dinámicos -->
@@ -64,172 +97,133 @@
 
     <!-- CONTENIDO PRINCIPAL -->
     <main class="content">
+        
         <!-- SECCIÓN POSTRES -->
-       <!-- ==========================================
-             SECCIÓN POSTRES (Corregida y Adaptable)
-             ========================================== -->
         <section id="postres" class="product-section">
             <h2>Nuestros Postres</h2>
-            <div class="info-divider"></div> <!-- Tu línea divisoria crema -->
+            <div class="info-divider"></div>
 
-            <!-- ¡Aquí volvimos a meter el contenedor que faltaba! -->
+            <!-- Contenedor general de la cuadrícula -->
             <div class="products-grid">
                 
-                <!-- Tarjeta 1 -->
                 <div class="product-card">
                     <img src="tres leches .jpeg" alt="Tres Leches" class="product-img"> 
                     <h3>Postre Tres Leches</h3>
-                    <p class="price">$175</p>
-                    <button class="btn-add" onclick="addToCart('Postre Tres Leches', 175)">Agregar al Carrito</button>
+                    <p class="price">DOP$175</p>
+                    <button class="btn-add" onclick="addToCart('Postre Tres Leches', 175, 'tres leches .jpeg')">Agregar al Carrito</button>
                 </div>
 
-                <!-- Tarjeta 2 -->
                 <div class="product-card">
                     <img src="Brownie.jpeg" alt="Browcookie" class="product-img">
                     <h3>Browcookie</h3>
-                    <p class="price">$175</p>
-                    <button class="btn-add" onclick="addToCart('Browcookie', 175)">Agregar al Carrito</button>
+                    <p class="price">DOP$175</p>
+                    <button class="btn-add" onclick="addToCart('Browcookie', 175, 'Brownie.jpeg')">Agregar al Carrito</button>
                 </div>
 
-                <!-- Tarjeta 3 -->
                 <div class="product-card">
                     <img src="alfajores.png" alt="Alfajores" class="product-img">
                     <h3>Alfajores (2)</h3>
-                    <p class="price">$100</p>
-                    <button class="btn-add" onclick="addToCart('Alfajores (2)', 100)">Agregar al Carrito</button>
+                    <p class="price">DOP$100</p>
+                    <button class="btn-add" onclick="addToCart('Alfajores (2)', 100, 'alfajores.png')">Agregar al Carrito</button>
                 </div>
 
-                <!-- Tarjeta 4 -->
                 <div class="product-card">
                     <img src="cookie .png" alt="Cookie" class="product-img">
                     <h3>Cookie</h3>
-                    <p class="price">$100</p>
-                    <button class="btn-add" onclick="addToCart('Cookie', 100)">Agregar al Carrito</button>
+                    <p class="price">DOP$100</p>
+                    <button class="btn-add" onclick="addToCart('Cookie', 100, 'cookie .png')">Agregar al Carrito</button>
                 </div>
 
-                <!-- Tarjeta 5 -->
                 <div class="product-card">
                     <img src="Red velvets.png" alt="Red Velvets" class="product-img">
                     <h3>Red Velvets</h3>
-                    <p class="price">$100</p>
-                    <button class="btn-add" onclick="addToCart('Red Velvets', 100)">Agregar al Carrito</button>
+                    <p class="price">DOP$100</p>
+                    <button class="btn-add" onclick="addToCart('Red Velvets', 100, 'Red velvets.png')">Agregar al Carrito</button>
                 </div>
 
-                <!-- Tarjeta 6 -->
                 <div class="product-card">
                     <img src="Brownie.png" alt="Brownie" class="product-img">
                     <h3>Brownie</h3>
-                    <p class="price">$100</p>
-                    <button class="btn-add" onclick="addToCart('Brownie', 100)">Agregar al Carrito</button>
+                    <p class="price">DOP$100</p>
+                    <button class="btn-add" onclick="addToCart('Brownie', 100, 'Brownie.png')">Agregar al Carrito</button>
                 </div>
 
-            </div> <!-- Cerramos correctamente la cuadrícula de productos -->
+            </div> <!-- Cierre correcto de products-grid -->
         </section>
 
-        <!-- SECCIÓN ENCARGOS -->
+        <!-- SECCIÓN ENCARGOS (CORREGIDA PARA PASAR LAS IMÁGENES AL CARRITO) -->
         <section id="pasteles" class="product-section">
             <h2>Encargos</h2>
+            <div class="info-divider"></div>
             <div class="products-grid">
                 <div class="product-card">
                     <img src="Encargo 2.jpeg" alt="Galletitas Navideñas" class="product-img">
                     <h3>Galletitas De Jengibre Navideñas</h3>
                     <p class="price">$75</p>
-                    <button class="btn-add" onclick="addToCart('Galletitas De Jengibre Navideñas', 75)">Agregar al Carrito</button>
+                    <button class="btn-add" onclick="addToCart('Galletitas De Jengibre Navideñas', 75, 'Encargo 2.jpeg')">Agregar al Carrito</button>
                 </div>
                 <div class="product-card">
                     <img src="Encargo 4.jpeg" alt="Galletitas Decoradas" class="product-img">
                     <h3>Galletitas Decoradas</h3>
                     <p class="price">$150</p>
-                    <button class="btn-add" onclick="addToCart('Galletitas Decoradas', 150)">Agregar al Carrito</button>
+                    <button class="btn-add" onclick="addToCart('Galletitas Decoradas', 150, 'Encargo 4.jpeg')">Agregar al Carrito</button>
                 </div>
                 <div class="product-card">
                     <img src="Galletitas de jengibre.jpeg" alt="Muñequito" class="product-img">
                     <h3>Muñequito De Jengibre</h3>
                     <p class="price">$60</p>
-                    <button class="btn-add" onclick="addToCart('Muñequito De Jengibre', 60)">Agregar al Carrito</button>
+                    <button class="btn-add" onclick="addToCart('Muñequito De Jengibre', 60, 'Galletitas de jengibre.jpeg')">Agregar al Carrito</button>
+                </div>
+                 <div class="product-card">
+                    <img src="Galletitas de jengibre.jpeg" alt="Muñequito" class="product-img">
+                    <h3>Muñequito De Jengibre</h3>
+                    <p class="price">$60</p>
+                    <button class="btn-add" onclick="addToCart('Muñequito De Jengibre', 60, 'Galletitas de jengibre.jpeg')">Agregar al Carrito</button>
                 </div>
             </div>
         </section>
 
-        <!-- ==========================================
-             SECCIÓN HISTORIA (Idéntica a la captura)
-             ========================================== -->
-        <section id="historia" class="info-section">
-            <h2>Historia</h2>
-            <div class="info-divider"></div>
-            <p class="info-text">
-                Comenzamos con la ilusión de llevar dulzura y momentos inolvidables a cada hogar. Cada receta está hecha a mano de manera artesanal, cuidando cada detalle con amor, dedicación y los ingredientes más selectos para garantizar un sabor único de la más alta calidad.
-            </p>
+        <!-- SECCIÓN HISTORIA (CON FONDO BORROSO) -->
+        <section id="historia" class="info-section historia-con-fondo">
+            <div class="historia-contenido">
+                <h2>Historia</h2>
+                <div class="info-divider"></div>
+                <p class="info-text">
+                    Comenzamos con la ilusión de llevar dulzura y momentos inolvidables a cada hogar. Cada receta está hecha a mano de manera artesanal, cuidando cada detalle con amor, dedicación y los ingredientes más selectos para garantizar un sabor único de la más alta calidad.
+                </p>
+            </div>
         </section>
 
-        <!-- ==========================================
- <!-- SECCIÓN CONTACTOS -->
-<section id="contacto" class="info-section">
-    <h2>Contactos</h2>
-    <div class="info-divider"></div>
-    <p class="contact-subtitle">¿Tienes dudas o quieres un pedido personalizado?</p>
-    
-    <div class="contact-details">
-        <p class="contact-item">
-            <span>📱 WhatsApp:</span> 
-            <strong>(849) 377-9046</strong>
-        </p>
-        <p class="contact-item">
-            <span>📩 Correo Electrónico:</span> 
-            <strong>davidliriano009@gmail.com</strong>
-        </p>
-    </div>
-</section>
+        <!-- SECCIÓN CONTACTOS -->
+        <section id="contacto" class="info-section">
+            <h2>Contactos</h2>
+            <div class="info-divider"></div>
+            <p class="contact-subtitle">¿Tienes dudas o quieres un pedido personalizado?</p>
+            
+            <div class="contact-details">
+                <p class="contact-item">
+                    <span>📱 WhatsApp:</span> 
+                    <strong>(849) 377-9046</strong>
+                </p>
+                <p class="contact-item">
+                    <span>📩 Correo Electrónico:</span> 
+                    <strong>davidliriano009@gmail.com</strong>
+                </p>
+            </div>
+        </section>
+
     </main>
 
-    <script>
-        let cart = [];
-        
-        function toggleMenu() { document.getElementById('sidebar').classList.toggle('active'); }
-        function toggleCart() { document.getElementById('cartSidebar').classList.toggle('active'); }
-
-        function addToCart(name, price) {
-            cart.push({name, price});
-            updateCartUI();
-        }
-
-        function updateCartUI() {
-            document.getElementById('cart-count').innerText = cart.length;
-            const cartItemsContainer = document.getElementById('cart-items');
-            cartItemsContainer.innerHTML = '';
-            let total = 0;
-            cart.forEach((item, index) => {
-                total += item.price;
-                let li = document.createElement('li');
-                li.innerHTML = `${item.name} - $${item.price} <span class="remove-item" onclick="removeItem(${index})">&times;</span>`;
-                cartItemsContainer.appendChild(li);
-            });
-            document.getElementById('cart-total-val').innerText = total;
-        }
-
-        function removeItem(index) {
-            cart.splice(index, 1);
-            updateCartUI();
-        }
-
-        function showAlert(text) {
-            document.getElementById('modal-alert-text').innerText = text;
-            document.getElementById('custom-alert').classList.add('show');
-        }
-        function closeAlert() { document.getElementById('custom-alert').classList.remove('show'); }
-
-        function goToCheckout() {
-            if(cart.length === 0) {
-                showAlert("El carrito está vacío.");
-                return;
-            }
-            if(cart.length <= 3) {
-                showAlert("Debes agregar más de 3 artículos al carrito para proceder.");
-                return;
-            }
-            localStorage.setItem('wh_cart', JSON.stringify(cart));
-            window.location.href = 'checkout.html';
-        }
-    </script>
+    <script src="script.js"></script>
 </body>
+<!-- PIE DE PÁGINA CON ENLACES LEGALES -->
+<footer style="text-align: center; padding: 20px; background-color: #FFFBF7; border-top: 1px solid #E6D5C3; margin-top: 50px;">
+    <p style="color: #6B3B30; margin-bottom: 10px;">&copy; 2026 WH Confetteria. Todos los derechos reservados.</p>
+    <div style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
+        <a href="terminos.html" style="color: #552F26; text-decoration: none; font-size: 0.9rem;">Términos de Servicio</a> |
+        <a href="privacidad.html" style="color: #552F26; text-decoration: none; font-size: 0.9rem;">Política de Privacidad</a> |
+        <a href="reembolsos.html" style="color: #552F26; text-decoration: none; font-size: 0.9rem;">Reembolsos y Devoluciones</a> |
+        <a href="envios.html" style="color: #552F26; text-decoration: none; font-size: 0.9rem;">Envíos y Entregas</a>
+    </div>
+</footer>
 </html>

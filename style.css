@@ -10,25 +10,56 @@ body {
     overflow-x: hidden; /* Evita el desbordamiento horizontal en celulares */
 }
 
-/* NAVBAR PRINCIPAL */
+/* NAVBAR PRINCIPAL COMPLETAMENTE FIJA CON TRANSPARENCIA */
 .navbar {
-    background-color: #FFFBF7;
+    position: fixed;              /* Se queda fija al hacer scroll */
+    top: 0;
+    left: 0;
+    width: 100%;                  /* Ocupa todo el ancho */
+    z-index: 1000;                /* Se mantiene siempre por encima de todo el contenido */
+    box-sizing: border-box;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 15px 5%;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    border-bottom: 1.5px solid #F5E6D3; /* Línea crema delicada debajo del navbar */
+    
+    /* Fondo con Transparencia Inteligente (Afecta SOLO a la caja contenedora) */
+    background-color: rgba(255, 251, 247, 0.82); /* Fondo crema con 82% de opacidad */
+    
+    /* Efecto Difuminado Glassmorphism al pasar el contenido por detrás */
+    backdrop-filter: blur(12px);                  
+    -webkit-backdrop-filter: blur(12px);          /* Compatibilidad garantizada para iPhone y Safari */
+    
+    /* Bordes y sombras sutiles de separación */
+    border-bottom: 1.5px solid rgba(245, 230, 211, 0.5); 
+    box-shadow: 0 2px 15px rgba(107, 59, 48, 0.04);
+    
+    transition: background-color 0.3s ease;
 }
 
+/* ASEGURAMOS QUE LOS ELEMENTOS DEL NAVBAR SE MANTENGAN 100% SÓLIDOS Y NÍTIDOS */
+.navbar .logo-container,
+.navbar .logo-img,
+.navbar .logo-text,
+.navbar .right-nav,
+.navbar .cart-icon,
+.navbar .menu-toggle,
+.navbar #cart-count {
+    opacity: 1 !important;    /* Evita que hereden la transparencia del fondo */
+    filter: none !important;
+}
 
 .logo-img {
-    height: 50px; /* Súbelo de 40px a 55px o el tamaño que más te guste */
+    height: 50px; 
     object-fit: contain;
+    border-radius: 100%;
 }
 
+.logo-text{
+    color: #552F26;
+    font-size: 20px;
+    font-weight: 600;
+}
 
 .right-nav {
     display: flex;
@@ -62,10 +93,166 @@ body {
 }
 
 /* ==========================================================================
+   NUEVA SECCIÓN HERO DE BIENVENIDA (ESTILO EXCLUSIVO WH CONFETTERIA)
+   ========================================================================== */
+.hero-section {
+    position: relative;
+    width: 100%;
+    /* Ocupa el alto de la pantalla restando el menú superior */
+    min-height: calc(100vh - 80px); 
+    margin-top: 80px; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    padding: 40px 5%;
+    box-sizing: border-box;
+}
+
+/* Capa de fondo difuminada */
+.hero-background-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url(FOndo\ de\ Postres.webp); /* Se utiliza una imagen de fondo integrada */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter: blur(5px) brightness(0.65); /* Un poco de oscuridad para que contraste el texto */
+    transform: scale(1.05);
+    z-index: -2;
+}
+
+/* Capa de color cálido translúcido */
+.hero-section::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(38, 20, 17, 0.6) 0%, rgba(107, 59, 48, 0.4) 100%);
+    z-index: -1;
+}
+
+/* Contenedor principal de dos columnas (Escritorio) */
+.hero-container {
+    max-width: 1200px;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 40px;
+    align-items: center;
+    position: relative;
+    z-index: 10;
+}
+
+/* LADO IZQUIERDO: TEXTOS */
+.hero-text-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+}
+
+.hero-subtitle {
+    color: rgba(255, 251, 247, 0.9);
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    margin-bottom: 15px;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+/* Título con fuente Playfair Display importada en el HTML */
+.hero-title {
+    color: #FFFBF7;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 3.8rem; /* Tamaño idóneo para computadoras */
+    font-weight: 800;
+    line-height: 1.15;
+    margin: 0 0 20px 0;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.hero-title em {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-style: italic;
+    font-weight: 400;
+}
+
+.hero-description {
+    color: #FFFBF7;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin: 0 0 30px 0;
+    max-width: 500px;
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* Botón de acción principal */
+.btn-hero-action {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background-color: #C89D7C; /* Marrón claro / beige tostado */
+    color: #FFFBF7;
+    padding: 14px 35px;
+    border-radius: 50px;
+    font-size: 1.05rem;
+    font-weight: 700;
+    text-decoration: none;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+.btn-hero-action:hover {
+    background-color: #B58A69;
+}
+
+.btn-hero-action:active {
+    transform: scale(0.97);
+}
+
+/* LADO DERECHO: TARJETA DEL PRODUCTO ESTRELLA (MARCO BEIGE CÁLIDO) */
+.hero-image-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.hero-product-card {
+    background-color: #E6D5C3; /* El hermoso marco beige cálido que combina */
+    padding: 16px;            /* Grosor del marco */
+    border-radius: 40px;      /* Esquinas muy redondeadas y estéticas */
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.35);
+    max-width: 380px;         
+    width: 100%;
+    transform: rotate(2deg);  /* El toque de inclinación característico */
+    transition: transform 0.3s ease;
+}
+
+.hero-product-card:hover {
+    transform: rotate(0deg) scale(1.03);
+}
+
+.hero-highlight-img {
+    width: 100%;
+    height: auto;
+    border-radius: 28px;      /* Redondeado interno que acompaña el marco */
+    object-fit: cover;
+    display: block;
+}
+
+/* ==========================================================================
    2. CONTENIDO Y DISEÑO DE SECCIONES (PRODUCTOS)
    ========================================================================== */
 .content {
-    padding: 60px 5% 20px 5%; /* Espacio superior para separar del navbar y márgenes laterales */
+    /* No requiere padding exagerado arriba porque el Hero empuja el contenido */
+    padding: 60px 5% 20px 5%; 
     max-width: 1200px;
     margin: 0 auto;
 }
@@ -93,7 +280,6 @@ body {
 /* CUADRÍCULA INTELIGENTE (Se adapta sola al tamaño de pantalla) */
 .products-grid {
     display: grid;
-    /* En pantallas grandes pone 3 o 4 columnas, en pantallas medianas 2 o 3, y en celular 1 */
     grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
     gap: 30px; 
     justify-content: center;
@@ -150,7 +336,7 @@ body {
     border-radius: 20px;
     cursor: pointer;
     width: 85%;
-    margin-top: auto; /* Empuja el botón al fondo si los títulos tienen distintos largos */
+    margin-top: auto; 
     transition: background-color 0.2s ease, color 0.2s ease;
 }
 
@@ -171,7 +357,7 @@ body {
     background-color: #FFFBF7;
     box-shadow: -2px 0 5px rgba(0,0,0,0.05);
     transition: right 0.3s ease;
-    z-index: 1001;
+    z-index: 1051; 
     padding: 20px;
     box-sizing: border-box;
 }
@@ -224,30 +410,143 @@ body {
     right: 0;
 }
 
+/* NUEVO DISEÑO ESPACIADO PARA EL CARRITO LATERAL */
 #cart-items {
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Más espacio entre una tarjeta y otra */
+    padding: 15px 0;
     list-style: none;
-    padding: 0;
     margin: 0;
     flex-grow: 1;
     overflow-y: auto;
 }
 
-#cart-items li {
+/* Fila/tarjeta de cada producto */
+.cart-item-row {
+    display: flex;
+    background-color: #FFFBF7;
+    border: 1px solid #F5E6D3;
+    border-radius: 16px; /* Bordes un poco más redondeados y suaves */
+    padding: 16px; /* Mayor espacio interno para que respire */
+    box-shadow: 0 2px 8px rgba(107, 59, 48, 0.04);
+}
+
+/* Estructura del contenido interno */
+.cart-item-left {
+    display: flex;
+    align-items: center;
+    gap: 16px; /* Más separación entre la imagen y los textos */
+    width: 100%;
+}
+
+/* Imagen circular del postre */
+.cart-item-img {
+    width: 60px; 
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid #F5E6D3;
+    flex-shrink: 0; /* Evita que la imagen se achique si el texto es muy largo */
+}
+
+/* Caja de información (Nombre, precio y controles) */
+.cart-item-info {
+    display: flex;
+    flex-direction: column;
+    gap: 12px; /* Espacio cómodo entre el nombre y los controles */
+    flex-grow: 1;
+}
+
+/* Fila superior: Nombre del postre y Zafacón */
+.cart-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.cart-item-name {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #6B3B30;
+    line-height: 1.2;
+}
+
+/* Icono del Zafacón posicionado arriba */
+.cart-item-delete {
+    font-size: 1.1rem;
+    cursor: pointer;
+    opacity: 0.6;
+    transition: transform 0.2s, opacity 0.2s;
+    user-select: none;
+    padding: 2px;
+}
+
+.cart-item-delete:hover {
+    opacity: 1;
+    transform: scale(1.15);
+}
+
+/* Fila inferior: Precio y Controles de cantidad alineados */
+.cart-item-details-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 12px 0;
-    border-bottom: 1px solid #FAF5EF;
-    font-size: 1.05rem;
-    color: #6B3B30;
-    font-weight: 500;
+    width: 100%;
 }
 
-.remove-item {
-    color: #d9534f;
-    cursor: pointer;
+.cart-item-price {
+    font-size: 1.05rem;
+    color: #a06b5e;
+    font-weight: 700;
+}
+
+/* Contenedor de botones + y - */
+.quantity-controls {
+    display: flex;
+    align-items: center;
+    background-color: #F7EDE2;
+    border-radius: 20px;
+    padding: 4px 10px; /* Cómodo para pulsar con los dedos */
+    gap: 12px;
+    border: 1px solid #E6D5C3;
+}
+
+.qty-btn {
+    background: none;
+    border: none;
+    color: #6B3B30;
+    font-size: 1.1rem;
     font-weight: bold;
-    margin-left: 8px;
+    cursor: pointer;
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.1s ease;
+}
+
+.qty-btn:active {
+    transform: scale(0.8);
+}
+
+.qty-value {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #6B3B30;
+    min-width: 16px;
+    text-align: center;
+}
+
+/* Indicador de cantidad (x2, x3...) al lado del nombre del postre */
+.cart-item-qty-badge {
+    color: #a06b5e; 
+    font-weight: 800;
+    margin-left: 6px;
+    font-size: 0.95rem;
+    display: inline-block;
 }
 
 .cart-total {
@@ -273,7 +572,7 @@ body {
     background-color: #552F26;
 }
 
-/* MODAL DE ALERTA */
+/* MODAL DE ALERTA ORIGINAL */
 .modal-alert {
     position: fixed;
     top: 0;
@@ -389,68 +688,205 @@ body {
 }
 
 /* ==========================================================================
-   5. MEDIA QUERIES (ADAPTACIÓN AUTOMÁTICA SEGÚN PANTALLAS)
+   DISEÑO IDÉNTICO PARA LA VENTANA DE ADVERTENCIA (MODAL NUEVO)
    ========================================================================== */
 
-/* Ajustes para Tablets y Pantallas Medianas (Hasta 768px) */
-@media (max-width: 768px) {
-    .content {
-        padding: 50px 4% 20px 4%;
-    }
-    .product-section h2, .info-section h2 {
-        font-size: 1.9rem;
-    }
-    .info-text, .contact-subtitle, .contact-item {
-        font-size: 1.05rem;
-    }
-    .info-section {
-        margin: 50px auto;
-    }
+/* Fondo oscuro translúcido detrás del modal */
+.custom-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4); 
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 99999; 
+    opacity: 0;
+    transition: opacity 0.2s ease;
 }
 
-/* Ajustes Críticos para Celulares Pequeños (Hasta 480px) */
-@media (max-width: 480px) {
-    .cart-sidebar {
-        width: 100%; /* El carrito ocupa toda la pantalla en teléfonos para que sea cómodo */
-        right: -100%;
+.custom-modal-overlay.active {
+    opacity: 1;
+}
+
+/* La tarjeta blanca/crema del mensaje */
+.custom-modal-card {
+    background-color: #FFFBF7; 
+    border: 2px solid #E6D5C3; 
+    border-radius: 24px; 
+    padding: 30px 24px;
+    width: 90%;
+    max-width: 420px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(107, 59, 48, 0.15);
+    transform: scale(0.9);
+    transition: transform 0.2s ease;
+}
+
+.custom-modal-overlay.active .custom-modal-card {
+    transform: scale(1);
+}
+
+/* El icono de peligro amarillo arriba */
+.custom-modal-warning-icon {
+    font-size: 2rem;
+    display: block;
+    margin-bottom: 15px;
+}
+
+/* El texto de la advertencia */
+.custom-modal-message {
+    font-size: 1.15rem;
+    color: #6B3B30; 
+    font-weight: 500;
+    line-height: 1.5;
+    margin: 0 0 20px 0;
+    padding: 0 10px;
+}
+
+/* El botón marrón "Entendido" */
+.custom-modal-btn {
+    background-color: #6B3B30; 
+    color: #FFFFFF;
+    border: none;
+    border-radius: 50px; 
+    padding: 12px 35px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+    outline: none;
+}
+
+.custom-modal-btn:hover {
+    background-color: #552F26; 
+}
+
+.custom-modal-btn:active {
+    transform: scale(0.96);
+}
+
+/* ==========================================================================
+   CAMBIO DE NOMBRE DEL LOGO (MÓVIL / ESCRITORIO)
+   ========================================================================== */
+.logo-desktop {
+    display: inline-block;
+}
+
+.logo-mobile {
+    display: none; /* Por defecto ocultamos la versión corta en PC */
+}
+
+/* ==========================================================================
+   SECCIÓN HISTORIA CON FONDO DE IMAGEN BORROSA
+   ========================================================================== */
+.historia-con-fondo {
+    position: relative;
+    overflow: hidden;
+    padding: 60px 20px;
+    z-index: 1;
+    background: none; 
+}
+
+/* Capa de fondo con la imagen, efecto suave y animación de alejamiento */
+.historia-con-fondo::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url(dueños.jpeg); 
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter: blur(2px); 
+    animation: zoomEfectoLento 20s ease-in-out infinite alternate;
+    z-index: -2;
+}
+
+/* Capa oscura semi-transparente */
+.historia-con-fondo::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.45); 
+    z-index: -1;
+}
+
+/* Asegura que el contenido esté por encima y cambia el texto a blanco */
+.historia-contenido {
+    position: relative;
+    z-index: 2;
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+/* CAMBIO EXCLUSIVO DE COLOR DE TEXTO A BLANCO EN HISTORIA */
+.historia-contenido h2,
+.historia-contenido .info-text {
+    color: #FFFFFF !important; 
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6); 
+}
+
+/* Ajuste del divisor en la sección de historia para que también sea blanco */
+.historia-contenido .info-divider {
+    background-color: #FFFFFF !important;
+    opacity: 0.8;
+}
+
+/* Definición de la animación de alejamiento lento */
+@keyframes zoomEfectoLento {
+    0% {
+        transform: scale(1.15);
     }
-    .products-grid {
-        grid-template-columns: 1fr; /* Una sola tarjeta por fila en celulares */
-        gap: 25px;
-    }
-    .product-card {
-        padding: 16px; /* Menos margen interno para ganar espacio de pantalla */
-    }
-    .contact-details {
-        gap: 20px;
-    }
-    .contact-item {
-        flex-direction: column; /* Apila el título y el valor (como el mail) verticalmente */
-        gap: 5px;
+    100% {
+        transform: scale(1.02);
     }
 }
 
 /* ==========================================================================
-   2. ESTILOS DE LA PÁGINA DE PAGO (CHECKOUT.HTML) - 100% RESPONSIVO
+   6. ESTILOS DE LA PÁGINA DE PAGO (CHECKOUT.HTML) - 100% RESPONSIVO
    ========================================================================== */
 .checkout-body {
-    background-color: #FFFBF7;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    color: #6B3B30;
-    margin: 0;
-    padding: 0;
+    padding-top: 100px; 
 }
 
-/* NAVBAR EXCLUSIVO DE PAGO */
+/* NAVBAR DE PAGO */
 .checkout-navbar {
-    background-color: #FFFBF7;
-    border-bottom: 1.5px solid #F5E6D3;
+    position: fixed;        
+    top: 0;                 
+    left: 0;
+    width: 100%;            
+    z-index: 1000;          
+    
+    background-color: rgba(255, 251, 247, 0.82); 
+    backdrop-filter: blur(12px);                  
+    -webkit-backdrop-filter: blur(12px);          
+    
+    border-bottom: 1px solid rgba(107, 59, 48, 0.15); 
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+    
+    padding: 12px 24px;
+    box-sizing: border-box;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px 5%;
-    min-height: 65px;
-    box-sizing: border-box;
+    transition: all 0.3s ease;
+}
+
+.checkout-navbar .logo-container,
+.checkout-navbar .checkout-logo,
+.checkout-navbar .logo-text,
+.checkout-navbar .secure-icon {
+    opacity: 1 !important;
+    filter: none !important;
 }
 
 .checkout-logo {
@@ -493,13 +929,13 @@ body {
     margin: 0;
 }
 
-/* CONTENEDOR PRINCIPAL (2 columnas en computadoras, 1 en celulares) */
+/* CONTENEDOR PRINCIPAL */
 .checkout-container {
     max-width: 1100px;
     margin: 15px auto 60px auto;
     padding: 0 20px;
     display: grid;
-    grid-template-columns: 1.6fr 1fr; /* Columna de datos más ancha que la del resumen */
+    grid-template-columns: 1.6fr 1fr; 
     gap: 30px;
     box-sizing: border-box;
 }
@@ -517,7 +953,6 @@ body {
     border: 1.5px solid #F5E6D3;
     border-radius: 16px;
     padding: 30px;
-    box-shadow: none; /* Diseño limpio y plano idéntico a tu catálogo */
 }
 
 .checkout-section-card h3 {
@@ -697,12 +1132,10 @@ body {
     background-color: #F7EDE2;
 }
 
-/* ==========================================================================
-   RESUMEN DE COMPRA (BARRA LATERAL)
-   ========================================================================== */
+/* RESUMEN DE COMPRA */
 .checkout-sidebar {
     position: sticky;
-    top: 100px; /* Se queda fijo al hacer scroll en computadoras */
+    top: 110px; 
     height: fit-content;
 }
 
@@ -746,7 +1179,6 @@ body {
     line-height: 1.4;
 }
 
-/* TOTAL */
 .summary-total-row {
     display: flex;
     justify-content: space-between;
@@ -765,65 +1197,338 @@ body {
     font-size: 1.5rem;
 }
 
-/* BOTONES DE LA ORDEN */
-.btn-place-order {
-    background-color: #6B3B30;
-    color: #FFFBF7;
-    border: none;
-    padding: 15px;
-    font-size: 1.1rem;
-    font-weight: bold;
-    border-radius: 30px;
-    width: 100%;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
+/* SECCIÓN DE POLÍTICAS EN EL CHECKOUT */
+.checkout-legal-container {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
 }
 
-.btn-place-order:hover {
-    background-color: #552F26;
+.policy-box {
+    background-color: #6B3B30; 
+    border-radius: 20px;       
+    padding: 24px;
+    border: none;              
+    box-shadow: 0 4px 15px rgba(107, 59, 48, 0.1);
 }
 
-.btn-back-store {
-    background: none;
-    border: 1.5px solid #a06b5e;
-    color: #a06b5e;
-    padding: 12px;
-    border-radius: 30px;
-    width: 100%;
-    cursor: pointer;
+.policy-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.policy-title .info-icon {
+    font-size: 1.25rem;
+    color: #FFFBF7; 
+}
+
+.policy-title h4 {
+    margin: 0;
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: #FFFBF7; 
+}
+
+.policy-list {
+    margin: 0;
+    padding-left: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.policy-list li {
     font-size: 0.95rem;
-    font-weight: 600;
-    margin-top: 12px;
-    text-align: center;
-    display: block;
-    text-decoration: none;
-    box-sizing: border-box;
+    line-height: 1.5;
+    color: #FFFBF7; 
+}
+
+.policy-list li strong {
+    color: #FFFBF7;
+    font-weight: 700;
+}
+
+.policy-list li a {
+    color: #FFFBF7;
+    text-decoration: underline;
+}
+
+/* Checkbox Personalizado Redondo */
+.terms-checkbox-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 15px;
+    padding: 0 5px;
+}
+
+.custom-checkbox {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 22px;
+    height: 22px;
+    border: 2px solid #6B3B30; 
+    border-radius: 50%;        
+    outline: none;
+    cursor: pointer;
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
     transition: all 0.2s ease;
 }
 
-.btn-back-store:hover {
-    background-color: #F7EDE2;
-    color: #6B3B30;
+.custom-checkbox:checked {
+    background-color: #6B3B30;
     border-color: #6B3B30;
 }
 
+.custom-checkbox:checked::before {
+    content: "✓";
+    color: #FFFBF7;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.checkbox-label {
+    font-size: 0.95rem;
+    color: #6B3B30;
+    line-height: 1.4;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.checkbox-label a {
+    color: #6B3B30;
+    text-decoration: underline;
+}
+
+.payment-icons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin: 5px 0;
+}
+
+.pay-logo {
+    height: 36px;
+    width: auto;
+}
+
+/* BOTONES DE ACCIÓN */
+.checkout-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.btn-checkout-confirm {
+    background-color: #C89D7C; 
+    color: #FFFBF7;
+    font-size: 1.1rem;
+    font-weight: bold;
+    border: none;
+    padding: 15px;
+    border-radius: 50px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.btn-checkout-confirm:hover {
+    background-color: #B58A69;
+}
+
+.btn-checkout-confirm:active {
+    transform: scale(0.98);
+}
+
+.btn-checkout-continue {
+    background-color: #6B3B30; 
+    color: #FFFBF7;
+    border: none;
+    padding: 15px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.btn-checkout-continue:hover {
+    background-color: #552F26;
+}
+
+.btn-checkout-continue:active {
+    transform: scale(0.98);
+}
+
+.btn-checkout-cancel {
+    background-color: #261411; 
+    color: #FFFBF7;
+    border: none;
+    padding: 15px;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.btn-checkout-cancel:hover {
+    background-color: #170B09;
+}
+
+.btn-checkout-cancel:active {
+    transform: scale(0.98);
+}
+
+.checkout-footer-links {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.trust-text {
+    font-size: 0.9rem;
+    color: #6B3B30;
+    margin-bottom: 5px;
+}
+
 /* ==========================================================================
-   MEDIA QUERIES - EXCLUSIVAS DE CHECKOUT
+   7. REGLAS DE ADAPTABILIDAD GENERALES (RESPONSIVE)
    ========================================================================== */
 
-/* Ajuste para Tablets (Desactiva las dos columnas si falta espacio) */
+/* Tablets y pantallas medianas (Hasta 992px de ancho) */
 @media (max-width: 992px) {
+    .hero-container {
+        grid-template-columns: 1fr; /* Una sola columna para que baje la imagen del Hero */
+        gap: 30px;
+    }
+    
+    .hero-text-content {
+        align-items: center; /* Centramos textos y botón en tablet/móvil */
+        text-align: center;
+    }
+    
+    .hero-title {
+        font-size: 3rem; 
+    }
+    
+    .hero-product-card {
+        transform: none; /* Quitamos rotación inclinada en pantallas táctiles */
+        max-width: 320px; 
+    }
+    
+    .hero-product-card:hover {
+        transform: scale(1.02);
+    }
+
     .checkout-container {
-        grid-template-columns: 1fr; /* Todo pasa a una columna */
+        grid-template-columns: 1fr; 
         gap: 25px;
     }
+
     .checkout-sidebar {
-        position: static; /* Quitamos el comportamiento fijo */
+        position: static; 
     }
 }
 
-/* Ajustes para Celulares */
+/* Móviles (Hasta 768px de ancho) */
 @media (max-width: 768px) {
+    .content {
+        padding: 40px 4% 20px 4%; 
+    }
+    .product-section h2, .info-section h2 {
+        font-size: 1.9rem;
+    }
+    .info-text, .contact-subtitle, .contact-item {
+        font-size: 1.05rem;
+    }
+    .info-section {
+        margin: 50px auto;
+    }
+    .logo-desktop {
+        display: none; /* Oculta WHCONFETTERIA */
+    }
+    .logo-mobile {
+        display: inline-block; /* Muestra WH */
+    }
+}
+
+/* Celulares Pequeños (Hasta 576px de ancho) */
+@media (max-width: 576px) {
+    .hero-section {
+        min-height: calc(100vh - 70px); 
+        margin-top: 70px; 
+        padding: 30px 20px;
+    }
+    
+    .hero-subtitle {
+        font-size: 0.75rem;
+        letter-spacing: 1.5px;
+    }
+    
+    .hero-title {
+        font-size: 2.3rem; 
+        margin-bottom: 15px;
+    }
+    
+    .hero-description {
+        font-size: 0.95rem; 
+        margin-bottom: 20px;
+    }
+    
+    .btn-hero-action {
+        padding: 12px 28px;
+        font-size: 0.95rem; 
+    }
+    
+    .hero-product-card {
+        padding: 12px; 
+        border-radius: 30px;
+        max-width: 270px; 
+    }
+    
+    .hero-highlight-img {
+        border-radius: 20px;
+    }
+}
+
+/* Celulares de baja resolución (Hasta 480px de ancho) */
+@media (max-width: 480px) {
+    .cart-sidebar {
+        width: 100%; 
+        right: -100%;
+    }
+    .products-grid {
+        grid-template-columns: 1fr; 
+        gap: 25px;
+    }
+    .product-card {
+        padding: 16px; 
+    }
+    .contact-details {
+        gap: 20px;
+    }
+    .contact-item {
+        flex-direction: column; 
+        gap: 5px;
+    }
     .checkout-title-container {
         margin-top: 25px;
     }
@@ -831,10 +1536,10 @@ body {
         font-size: 1.6rem;
     }
     .checkout-section-card {
-        padding: 20px; /* Menos márgenes para aprovechar pantallas pequeñas */
+        padding: 20px; 
     }
     .bank-options-grid {
-        grid-template-columns: 1fr; /* Los botones bancarios se apilan verticalmente */
+        grid-template-columns: 1fr; 
         gap: 10px;
     }
 }

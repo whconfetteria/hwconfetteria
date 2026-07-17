@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -11,12 +10,16 @@
 
     <!-- NAVBAR PREMIUM MINIMALISTA -->
     <header class="checkout-navbar">
-        <img src="hwconfetteria logo.jpg" alt="Logo Repostería" class="checkout-logo" onclick="window.location.href='index.html'">
+        <a href="index.html" class="logo-container" style="text-decoration: none; display: flex; align-items: center; gap: 10px;">
+            <img class="logo-img" src="hwconfetteria logo.jpg" alt="Logo Repostería" class="checkout-logo">
+            <span class="logo-text">WH</span>
+
+        </a>
         <span class="secure-icon">🔒 Pago Seguro</span>
     </header>
 
     <!-- VENTANA EMERGENTE DE AVISO -->
-    <div id="custom-alert" class="modal-alert">
+    <div id="custom-alert" class="modal-alert" style="display: none;">
         <div class="modal-alert-content">
             <span class="modal-alert-icon">⚠️</span>
             <p id="modal-alert-text"></p>
@@ -107,8 +110,10 @@
 
         </div>
 
-        <!-- COLUMNA DERECHA: RESUMEN LATERAL FIJO -->
+        <!-- COLUMNA DERECHA: RESUMEN LATERAL TOTALMENTE SEPARADO -->
         <div class="checkout-sidebar">
+            
+            <!-- 1. TARJETA BLANCA: Únicamente para el Resumen y el Total -->
             <div class="summary-card">
                 <h3>Resumen del Pedido</h3>
                 <hr class="summary-divider">
@@ -120,14 +125,66 @@
                     <span>Total a pagar:</span>
                     <span class="total-price">$<span id="summary-total-val">0</span></span>
                 </div>
-                <button class="btn-place-order" onclick="processFinalOrder()">Confirmar y Enviar por WhatsApp</button>
-                <button class="btn-back-store" onclick="window.location.href='index.html'">← Volver a la tienda</button>
-            </div>
-        </div>
+            </div> <!-- AQUÍ SE CIERRA LA CAJA BLANCA DEL RESUMEN -->
 
-    </div>
+            <!-- 2. SECCIÓN INDEPENDIENTE: Políticas, Checkbox y Botones de Acción (Sueltos) -->
+            <div class="checkout-legal-container">
+                
+                <!-- Caja de políticas propia con su fondo crema manejado por CSS -->
+                <div class="policy-box">
+                    <div class="policy-title">
+                        <span class="info-icon">ℹ️</span>
+                        <h4>Nuestra Política de Compromiso y Dulzura</h4>
+                    </div>
+                    <ul class="policy-list">
+                        <li><strong>Cada postre es único:</strong> Preparamos tus pedidos desde cero y de forma totalmente artesanal para garantizar su frescura, por lo que no aceptamos devoluciones una vez entregados.</li>
+                        <li><strong>¿Surgió un imprevisto?:</strong> Puedes cancelar tu orden de forma gratuita con un mínimo de <strong>24 horas de anticipación</strong>. Pasado este plazo, no se realizarán reembolsos debido a que los insumos ya habrán sido utilizados para tu preparación.</li>
+                        <li>Para conocer todos los detalles sobre nuestro proceso, consulta nuestros <a href="terminos.html" target="_blank">Términos y Condiciones completos</a>.</li>
+                    </ul>
+                </div>
 
-    <!-- SCRIPT LOGICIAL DE FILTRADO -->
+                <!-- Checkbox de aceptación (Suelto sobre fondo crema manejado por CSS) -->
+                <div class="terms-checkbox-container">
+                    <input type="checkbox" id="accept-terms" class="custom-checkbox">
+                    <label for="accept-terms" class="checkbox-label">
+                        He leído y acepto los <a href="terminos.html" target="_blank">Términos y Condiciones</a> y las <a href="privacidad.html" target="_blank">Políticas de Privacidad</a>
+                    </label>
+                </div>
+
+                <!-- Logotipos de Tarjetas -->
+                <div class="payment-icons">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" alt="Mastercard" class="pay-logo">
+                </div>
+
+                <!-- Botones de Acción (Sueltos sobre fondo crema manejado por CSS) -->
+                <div class="checkout-actions">
+                    <button class="btn-checkout-confirm" onclick="processFinalOrder()">
+                        Confirmar Pedido <span class="arrow-icon">➔</span>
+                    </button>
+                    
+                    <button class="btn-checkout-continue" onclick="window.location.href='index.html'">
+                        <span class="bag-icon">🛍️</span> Seguir Comprando
+                    </button>
+                    
+                    <button class="btn-checkout-cancel" onclick="cancelEntireOrder()">
+                        <span class="cancel-icon">✕</span> Cancelar Pedido
+                    </button>
+                </div>
+
+                <!-- Textos de confianza al pie -->
+                <div class="checkout-footer-links">
+                    <p class="trust-text">Retiro en tienda • Pago seguro</p>
+                    <a href="envios.html" target="_blank" class="delivery-policy-link">Ver política de entrega</a>
+                   
+                </div>
+
+            </div> <!-- Fin de checkout-legal-container -->
+
+        </div> <!-- Fin de checkout-sidebar -->
+
+    </div> <!-- Fin de checkout-container -->
+
+    <!-- SCRIPT LOGICIAL CON VALIDACIONES -->
     <script>
         let checkoutCart = [];
         let deliveryMethod = 'pickup';
@@ -135,12 +192,18 @@
         let selectedBankName = '';
 
         window.onload = function() {
-            const savedCart = localStorage.getItem('wh_cart');
+            const savedCart = localStorage.getItem('cart');
             if(!savedCart) {
                 window.location.href = 'index.html';
                 return;
             }
             checkoutCart = JSON.parse(savedCart);
+            
+            if(checkoutCart.length === 0) {
+                window.location.href = 'index.html';
+                return;
+            }
+            
             renderSummary();
         };
 
@@ -150,10 +213,18 @@
             let total = 0;
 
             checkoutCart.forEach(item => {
-                total += item.price;
+                const itemSubtotal = item.price * item.quantity;
+                total += itemSubtotal;
+                
                 let li = document.createElement('li');
                 li.className = 'summary-item';
-                li.innerHTML = `<span>${item.name}</span> <strong>$${item.price}</strong>`;
+                li.innerHTML = `
+                    <span style="display: flex; align-items: center; gap: 8px;">
+                        <img src="${item.imgSrc || 'hwconfetteria logo.jpg'}" style="width:30px; height:30px; border-radius:50%; object-fit:cover; border:1px solid #F5E6D3;">
+                        ${item.name} <strong>x${item.quantity}</strong>
+                    </span> 
+                    <strong>$${itemSubtotal}</strong>
+                `;
                 listContainer.appendChild(li);
             });
 
@@ -162,9 +233,11 @@
 
         function showAlert(text) {
             document.getElementById('modal-alert-text').innerText = text;
-            document.getElementById('custom-alert').classList.add('show');
+            document.getElementById('custom-alert').style.display = 'flex';
         }
-        function closeAlert() { document.getElementById('custom-alert').classList.remove('show'); }
+        function closeAlert() { 
+            document.getElementById('custom-alert').style.display = 'none'; 
+        }
 
         function setDeliveryMethod(method) {
             deliveryMethod = method;
@@ -213,7 +286,18 @@
             document.getElementById('bank-bhd').classList.remove('selected');
         }
 
+        function cancelEntireOrder() {
+            localStorage.removeItem('cart');
+            window.location.href = "index.html";
+        }
+
         function processFinalOrder() {
+            const acceptCheckbox = document.getElementById('accept-terms');
+            if (!acceptCheckbox.checked) {
+                showAlert("Para continuar, debes leer y aceptar los Términos, Condiciones y Políticas de Privacidad.");
+                return;
+            }
+
             const name = document.getElementById('client-name').value.trim();
             if(!name) {
                 showAlert("Por favor, introduce tu nombre.");
@@ -263,15 +347,18 @@
             mensaje += `\n📦 *Detalle del Pedido:*\n`;
             let total = 0;
             checkoutCart.forEach(item => {
-                mensaje += `- ${item.name} ($${item.price})\n`;
-                total += item.price;
+                const itemSubtotal = item.price * item.quantity;
+                mensaje += `- ${item.name} (${item.quantity} ud.) -> $${itemSubtotal}\n`;
+                total += itemSubtotal;
             });
 
             mensaje += `\n💰 *Total a pagar: $${total}*`;
 
             let url = `https://wa.me/18493779046?text=${encodeURIComponent(mensaje)}`;
-            localStorage.removeItem('wh_cart'); 
+            
+            localStorage.removeItem('cart'); 
             window.open(url, '_blank');
+            window.location.href = "index.html"; 
         }
     </script>
 </body>
